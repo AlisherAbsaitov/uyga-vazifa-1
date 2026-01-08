@@ -1,26 +1,32 @@
 import fs from "fs";
 
-console.log("App started");
-fs.appendFileSync("logs.txt", `Log entry at ${new Date().toISOString()}\n`);
+
+fs.appendFileSync(
+  "logs.txt",
+  ` ${new Date().toLocaleString()}\n`
+);
 
 setTimeout(() => {
-  console.log("First tiemeout event");
+  console.log("Bir martalik timeout ishga tushdi");
 }, 2000);
 
-let interval = setInterval(() => {
-  console.log("Interval tick");
+const timer = setInterval(() => {
+  console.log("🔁 Interval ishlayapti...");
 }, 1000);
 
 setTimeout(() => {
-  clearInterval(interval);
+  clearInterval(timer);
+  console.log("⛔ Interval to‘xtatildi");
 }, 3000);
 
-try {
-  function readLogs() {
-    let logs = fs.readFileSync("logs.txt", "utf8");
-    console.log(logs.trim());
+function showLogs() {
+  try {
+    const data = fs.readFileSync("logs.txt", "utf-8");
+    console.log("Log fayl mazmuni:");
+    console.log(data.trim());
+  } catch (err) {
+    console.error(err.message);
   }
-  setTimeout(readLogs, 5000);
-} catch (error) {
-  console.error("Error reading logs:", error);
 }
+
+setTimeout(showLogs, 5000);
